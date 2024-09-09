@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from Scraper import ScholarScraper
+from ApiManager import GPTClient
+import os
 
 app = Flask(__name__)
 
@@ -11,6 +13,15 @@ def home():
 def search():
     if request.method == 'POST':
         query = request.form['query']  # Kullanıcının girdiği makale konusu
+        apiManager = GPTClient()
+        
+        keyword_List = apiManager.Generate_keywords(query)
+        #arama yapılacak kelimeleri listele
+        keyword_List.insert(0,query)
+        print (keyword_List)
+        
+        
+        
         # Burada web scraping veya API sorgulama gibi işlemleri yapabilirsiniz.
         # Şimdilik basit bir çıktıyla kullanıcıya aranan konuyu göstereceğiz.
         scraper = ScholarScraper()
